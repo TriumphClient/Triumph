@@ -14,6 +14,5 @@ public static void mainActions(){
 	System.out.println("The Mean of the set is: " + calculatedMean);
 	System.out.println("The Sum of the set is: " + calculatedSum);
 	stats.standardDeviation();
-	mainActions();
 }
 }
