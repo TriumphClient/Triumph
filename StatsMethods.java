@@ -4,6 +4,8 @@ import java.util.Scanner;
 public class StatsMethods {
 static Scanner methodReader = new Scanner(System.in);
 static ArrayList<Double> values = new ArrayList<Double>();
+static int z = 0;
+static int y = 0;
 public StatsMethods(){
 }
 public double sizeOfList(){
@@ -11,29 +13,28 @@ public double sizeOfList(){
 	return sizeOfList;
 }
 public void determineFrequency(){
+	System.out.println("Caution: Do not spam inputs of the program may generate undesired results! Always check the final data set!");
 	System.out.println("Would you like for your values to have frequency values associated with them? Yes/No");
 	String answer = methodReader.nextLine();
 	if(answer.equalsIgnoreCase("Yes")){
-		addValuesWithFreq();
+		determineAmountValuesFreq();
 	}
 	else if(answer.equalsIgnoreCase("No")){
-		addValues();
+		determineAmountValues();
 	}
 	else{
 		System.out.println("Invalid input! Please type Yes or No. Restarting...");
 		determineFrequency();
 	}
 }
-public void addValuesWithFreq(){
-	System.out.println("How many values (without regards to frequency) would you like to add?");
+public void addValuesWithFreq(int numValues){ //make this work like addValues so it repeats on incorrect inputs
 	try{
-	int numValues = Integer.parseInt(methodReader.nextLine());
-	try{
-	for(int i = 0; i < numValues; i++){
-		System.out.println("Please enter value #" + (i + 1) + ": ");
+	while(y < numValues){
+		System.out.println("Please enter value #" + (y + 1) + ": ");
 		double value = Double.parseDouble(methodReader.nextLine());
-		System.out.println("Please enter frequency of value #" + (i + 1) + ": ");
+		System.out.println("Please enter frequency of value #" + (y + 1) + ": ");
 		double frequency = Integer.parseInt(methodReader.nextLine());
+		y++;
 		for(int a = 0; a < frequency; a++){
 		values.add(value);
 		}
@@ -41,38 +42,82 @@ public void addValuesWithFreq(){
 		}
 	}
 	catch (java.lang.NumberFormatException invalidValueInput){
-		System.out.println("Invalid value! Restarting...");
-		addValuesWithFreq();
-	}
-	}
-	catch (java.lang.NumberFormatException invalidInput){
-		System.out.println("Invalid Input! Please enter a valid number of values.");
-		addValuesWithFreq();
+		boolean errorPresent = true;
+		while(errorPresent == true && y < numValues){
+			try{
+				System.out.println("Please enter value #" + (y + 1) + ": ");
+				double value = Double.parseDouble(methodReader.nextLine());
+				System.out.println("Please enter frequency of value #" + (y + 1) + ": ");
+				double frequency = Integer.parseInt(methodReader.nextLine());
+				for(int a = 0; a < frequency; a++){
+				values.add(value);
+				}
+				Collections.sort(values);
+				y++;
+			}
+			catch (java.lang.NumberFormatException invalidValueFreq){
+				addValuesWithFreq(numValues);
+			}
+		}
 	}
 }
-public void addValues(){
+public void determineAmountValues(){
 	System.out.println("How many values would you like to add?");
 	try{
 	int numValues = Integer.parseInt(methodReader.nextLine());
-	try{
-	for(int i = 0; i < numValues; i++){
-		System.out.println("Please enter value #" + (i + 1) + ": ");
-		double value = Double.parseDouble(methodReader.nextLine());
-		values.add(value);
-		Collections.sort(values);
-		}
-	}
-	catch (java.lang.NumberFormatException invalidValueInput){
-		System.out.println("Invalid value! Please enter an integer number.");
-		addValues();
-	}
+	addValues(numValues);
 	}
 	catch (java.lang.NumberFormatException invalidInput){
+		boolean errorPresent = true;
+		while(errorPresent == true){
 		System.out.println("Invalid Input! Please enter a valid number of values.");
-		addValues();
+		errorPresent = false;
+		determineAmountValues();
+		}
 	}
-
 }
+public void determineAmountValuesFreq(){
+	System.out.println("How many values would you like to add?");
+	try{
+	int numValues = Integer.parseInt(methodReader.nextLine());
+	addValuesWithFreq(numValues);
+	}
+	catch (java.lang.NumberFormatException invalidInput){
+		boolean errorPresent = true;
+		while(errorPresent == true){
+		System.out.println("Invalid Input! Please enter a valid number of values.");
+		errorPresent = false;
+		determineAmountValues();
+		}
+	}
+}
+public void addValues(int numValues){
+	try{
+		while(z < numValues){
+			System.out.println("Please enter value #" + (z + 1) + ": ");
+			double value = Double.parseDouble(methodReader.nextLine());
+			values.add(value);
+			Collections.sort(values);
+			z++;
+			}
+	}
+	catch (java.lang.NumberFormatException invalidValueInput){
+		boolean errorPresent = true;
+		while(errorPresent == true && z < numValues){
+			System.out.println("Please enter value #" + (z + 1) + ": ");
+			try{
+			double value = Double.parseDouble(methodReader.nextLine());
+			values.add(value);
+			Collections.sort(values);
+			z++;
+			errorPresent = false;
+			}
+			catch (java.lang.NumberFormatException invalidValueErrorInput){
+				addValues(numValues);
+			}
+		}
+		}
+	}
 public void printValues(){
 	System.out.println("The following values exist in the data set: ");
 	System.out.print("[");
